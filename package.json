@@ -40,7 +40,7 @@
     "@babel/polyfill": "^7.0.0",
     "axios": "^0.18.0",
     "date-fns": "^1.29.0",
-    "knockout": "^3.4.2",
+    "knockout": "^3.5.0",
     "store": "^2.0.12",
     "uuid": "^3.3.2",
     "vconsole": "^3.3.0"
