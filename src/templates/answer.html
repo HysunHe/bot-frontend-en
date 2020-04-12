@@ -1,0 +1,18 @@
+    <div class="p-2 rounded-t-larger text-sm bg-answer bubble-left" data-bind="html: answer"></div>
+    
+    <div class="p-2 mt-1 rounded-larger bg-white" data-bind="visible: items, foreach: { data: items, as: 'item' }">
+      <div class="option-width p-1 mt-half rounded text-sm hover:text-blue cursor-pointer border bg-border text-center button-label-color" data-bind="html: item.label, click: $parent.loadItem"></div>
+    </div>    
+
+    <div class="p-2 mt-1 rounded-larger bg-white" data-bind="visible: message.globalActions, foreach: { data: message.globalActions, as: 'item' }">
+      <div class="option-width p-1 mt-half rounded text-sm hover:text-blue cursor-pointer border bg-border text-center button-label-color" data-bind="html: item.label, click: $parent.loadItem"></div>
+    </div>  
+
+    <div class="flex flex-row h-10 w-full" data-bind="visible: showFeedback">
+      <div class="flex flex-1 items-center justify-center rounded-bl-larger text-sm text-black cursor-pointer bg-grey-lighter hover:bg-blue-lighter border border-white" data-bind="click: keepGoing,text: display.menu.left_menu_4">
+
+      </div>
+      <div class="flex flex-1 items-center justify-center rounded-br-larger text-sm text-blue font-medium cursor-pointer bg-white hover:bg-blue-lighter border border-white" data-bind="click: answered,text: display.menu.left_menu_5">
+   
+      </div>
+    </div>

@@ -1,0 +1,37 @@
+<!-- ko ifnot: message.layout -->
+<div class="flex flex-row w-full h-10">
+  <div class="flex flex-1 items-center justify-center rounded-t-larger text-sm font-medium cursor-pointer bg-grey-lighter border border-white" data-bind="text: display.menu.left_menu_1">
+    
+  </div>
+</div>
+<div class="p-2 rounded-b-larger bg-white option-width" data-bind="foreach: { data: items, as: 'item' }">
+  <div class="pt-3 text-sm mb-1 hover:text-blue cursor-pointer" data-bind="html: item.title, click: $parent.loadItem"></div>
+</div>
+<!-- /ko -->
+
+<!-- ko if: message.layout -->
+<div class="rounded-b-larger bg-grey-lighter bottester-bot" data-bind="foreach: { data: items, as: 'item' }">
+  <div class="p-2 mb-2 bg-white">
+    <div data-bind="text: $data.title" class="text-center text-cblue text-lg"></div>
+    <!-- ko if: $data.description -->
+    <div class="mt-1 text-sm" data-bind="text: $data.description" class="bot-card-desc"></div>
+    <!-- /ko -->
+
+    <!-- ko if: $data.imageUrl -->
+    <img class="mt-1" style="height: 100%; width: 100%; object-fit: contain" data-bind="attr: {src: $data.imageUrl, alt: $data.title}">
+    <!-- /ko -->
+
+    <div class="bot-action-list" data-bind="foreach: { data: $data.actions, as: 'action' }">
+      <div class="p-2 mt-1 text-sm hover:text-blue cursor-pointer border bg-border text-center button-label-color" data-bind="html: action.label, click: $component.clickChoice, attr: {'data-item-title': $parent.title}"></div>
+    </div>
+  </div>
+</div>
+
+<div class="p-2 mt-1 rounded-larger bg-white" data-bind="visible: message.actions, foreach: { data: message.actions, as: 'item' }">
+  <div class="p-2 text-sm hover:text-blue cursor-pointer border bg-border text-center button-label-color" data-bind="html: item.label, click: $parent.loadItem"></div>
+</div>  
+
+<div class="p-2 mt-1 rounded-larger bg-white" data-bind="visible: message.globalActions, foreach: { data: message.globalActions, as: 'item' }">
+  <div class="option-width p-1 mt-half rounded text-sm hover:text-blue cursor-pointer border bg-border text-center button-label-color" data-bind="html: item.label, click: $parent.loadItem"></div>
+</div>  
+<!-- /ko -->

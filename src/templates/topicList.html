@@ -1,0 +1,9 @@
+
+    <div class="flex flex-row w-full h-10">
+      <div class="flex flex-1 items-center justify-center rounded-t-larger text-sm font-medium cursor-pointer bg-grey-lighter border border-white" data-bind="text: display.menu.left_menu_1">
+     
+      </div>
+    </div>
+    <div class="p-2 rounded-b-larger bg-white" data-bind="foreach: { data: topics, as: 'topic' }">
+      <div class="pt-3 text-sm mb-1 hover:text-blue cursor-pointer" data-bind="html: topic.question, attr: { 'data-topic-id': topic.id }, click: $parent.loadTopic"></div>
+    </div>

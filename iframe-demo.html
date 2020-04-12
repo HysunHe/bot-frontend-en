@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>iframe demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+  <!-- 替换成自己的按钮 -->
+  <button id="open-chatbot">打开智能客服</button>
+
+  <div id="chatbot-container">
+    <!-- 跨域的情况下iframe不能自己关闭自己，需要一个外部的关闭按钮 -->
+    <div id="close-chatbot">
+      <svg t="1540802830149" style="" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        p-id="1041" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+          <style type="text/css"></style>
+        </defs>
+        <path d="M513.344 0a512 512 0 1 0 0 1024 512 512 0 0 0 0-1024z m226.048 674.624l-54.528 56.896-171.52-164.928-171.392 164.928-54.592-56.896L456.576 512 287.36 349.312l54.592-56.768 171.392 164.8 171.52-164.8 54.528 56.768L570.176 512l169.216 162.624z"
+          fill="#cdcdcd" p-id="1042"></path>
+      </svg>
+    </div>
+  </div>
+
+  <style>
+    #chatbot-container {
+      display: none;
+      position: fixed;
+      width: 30%;
+      height: 70%;
+      bottom: 32px;
+      right: 32px;
+    }
+    #chatbot {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border: 1px solid #B8C2CC;
+    }
+    #close-chatbot {
+      z-index: 10;
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0.75rem;
+      width: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    var chatbotContainer = document.getElementById('chatbot-container')
+
+    var openButton = document.getElementById('open-chatbot')
+    openButton.addEventListener('click', function () {
+      var chatbot = document.createElement('iframe')
+      chatbot.setAttribute('id', 'chatbot')
+      chatbot.setAttribute('src', 'https://chatbot.reagent.com.cn/web/')
+      chatbotContainer.appendChild(chatbot)
+      chatbotContainer.style.display = 'block'
+    })
+
+    var closeButton = document.getElementById('close-chatbot')
+    closeButton.addEventListener('click', function () {
+      chatbotContainer.removeChild(document.getElementById('chatbot'))
+      chatbotContainer.style.display = 'none'
+    })
+  </script>
+</body>
+
+</html>

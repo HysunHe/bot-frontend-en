@@ -1,0 +1,24 @@
+
+    <div class="flex flex-row w-full h-10">
+      <div class="flex flex-1 items-center justify-center rounded-tl-larger text-sm font-medium cursor-pointer border border-white"
+        data-bind="click: (data, event) => switchToTab('topics', data, event), css: {'border-bg': showTopics, 'bg-border': !showTopics() },text: display.menu.left_menu_2">
+      
+      </div>
+      <div class="flex flex-1 items-center justify-center rounded-tr-larger text-sm font-medium cursor-pointer border border-white"
+        data-bind="click: (data, event) => switchToTab('categories', data, event), css: {'border-bg': !showTopics(), 'bg-border': showTopics() },text: display.menu.left_menu_3">
+      
+
+      </div>
+    </div>
+
+    <!-- ko if: showTopics -->
+    <div class="p-2 rounded-b-larger bg-white" data-bind="foreach: { data: topics, as: 'topic' }">
+      <div class="pt-3 text-sm hover:text-blue cursor-pointer" data-bind="html: topic.question, attr: { 'data-topic-id': topic.id }, click: $parent.loadTopic"></div>
+    </div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: showTopics -->
+    <div class="p-2 rounded-b-larger bg-white" data-bind="foreach: { data: categories, as: 'category' }">
+      <div class="pt-3 text-sm hover:text-blue cursor-pointer" data-bind="html: category.name, attr: { 'data-category-id': category.id }, click: $parent.loadTopics"></div>
+    </div>
+    <!-- /ko -->

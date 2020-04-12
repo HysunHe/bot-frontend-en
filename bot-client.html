@@ -1,0 +1,319 @@
+<!--
+ Copyright (c) 2016-2017, Oracle and/or its affiliates. All rights reserved.
+ -->
+<div id="page" class="oj-hybrid-applayout-page">
+	<!-- Content: all other templates will be called from here! -->
+
+	<div id="content" class="oj-panel oj-margin ">
+		<div class="message-container">
+			<div id="listview" data-bind="if: allItems">
+				<div
+					data-bind="template: { name: 'chat_template', foreach: allItems, as: 'item' }"></div>
+			</div>
+			<img src="js/jet-composites/bot-client/waitingForText.gif"
+				style="width: 50px; border-radius: 10px; margin-top: 15px; margin-left: 15px;"
+				data-bind="visible:waitingForText" />
+		</div>
+
+	</div>
+		<!-- FOOTER -->
+	<div id="chatDialogFooter" class="oj-applayout-fixed-bottom" style="width: 98%; position:fixed;">
+		<div class="oj-flex oj-flex-items-pad" style="width: 100%;">
+                    <div class="oj-flex-item" style="padding-right: 0;">
+				<input id="text-input" onfocus="scrollpage()" onblur="scrollMinor()" type="text"
+					data-bind="ojComponent: {
+                                  component: 'ojInputText',
+                                  value: value,
+                                  placeholder: 'Type a message',
+                                  optionChange: valueChangeHandler,
+                                  rootAttributes: {
+                                            style:'max-width:100%'
+                                    }
+                                  }" />
+			</div>
+			<div style="width: 65px; margin-right: 5px;">
+				<button id="send"
+					data-bind="click: sendMessage,
+                          ojComponent: {
+                          component:'ojButton',
+                          label: 'Send',
+                          chroming: 'full',
+                          display: 'all'
+                      }"></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- USER prompt option -->
+<script type="text/html" id="promt-template-client">
+    <div class="oj-flex oj-sm-justify-content-flex-end oj-sm-flex-items-initial bubble-right-container ">
+      <div class="oj-flex-item" style="margin-top: 3px;background: #A0E759; margin-right: 40px;   padding: 10px;border-radius: 10px;position:relative; max-width: 85%; margin-left: 40px;"> 
+        <img src="css/images/User.png" style="position:absolute;right:-50px;top:0px;width: 40px;height: 40px; margin-right:5px;">
+        <span class="bubble-right" style="padding:0px;"><span data-bind="html: item.payload"></span></span>
+      </div>
+      </div>
+    </div>
+  </script>
+
+<!-- BOT Prompt Template -->
+<script type="text/html" id="promt-template-bot">
+    <div data-bind="if: prompts.prompt" class="oj-flex " style="width: 85%" >
+      <div class="oj-flex" style="width: 100%">
+        <div class="oj-flex-item bubble-left" data-bind="css:prompts.options ? 'bubble-left-with-options' : ''" >
+          <span data-bind="html: prompts.prompt"></span>
+        </div>
+      </div>
+
+      <div data-bind="if: prompts.options" style="width: 100%;margin-right: 2px;">
+        <div class="options">
+          <div data-bind="foreach: prompts.options">
+            <div class="oj-flex oj-sm-justify-content-left" data-bind="css:($index() === ($parent.options.length - 1)) ? 'option-last' : 'option'" >
+              <div class="flex-item " >
+                <div data-bind="template: { name: 'option-template'
+                    , data: {clazz:'option-link',prompt:prompt,payload:payload,type:'postback'
+                             ,parent:$parentContext.$parents[2]} }"></div>
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>
+    </div>
+  </script>
+
+<!-- ERROR message template -->
+<script type="text/html" id="errorMessage-template">
+    <div class="oj-flex bubble-right" style="margin: 5px">
+      <div class="oj-lg-10 oj-md-10 oj-sm-12">
+        <div class="oj-flex row">
+          <div class="oj-lg-12 oj-md-12 oj-sm-12">
+            <span data-bind="html: errorMessage"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+<!-- Vertical CARDs template -->
+<script type="text/html" id="cards-vertical">
+    <div id="cardsListView" 
+         aria-label="Vertical Cards"
+         data-bind="ojComponent: {component: 'ojListView', selectionMode: 'none'
+                 , rootAttributes:{class:'card'}}">
+
+      <!-- ko foreach: cards -->
+      <li data-bind="attr: { id: 'prefix_' + $index() }">
+        <div class="oj-flex ">
+          <div class="oj-flex-item">
+
+            <div class="oj-flex">
+              <div class="oj-flex-item" data-bind="if: $data && $data.hasOwnProperty('title')">
+                <span class="card-title" data-bind="html: title" class="name"></span>
+              </div>
+            </div>   
+            <div class="oj-flex">
+              <div class="oj-flex-item" data-bind="if: $data && $data.hasOwnProperty('subTitle')">
+                <span class="card-sub-title" data-bind="html: subTitle" ></span>
+              </div>
+            </div>   
+            <div class="oj-flex">
+              <div class="oj-flex-item" data-bind="if: $data && $data.hasOwnProperty('cardUrl')">
+                                    <a class="card-url" target="_blank" data-bind="text: cardUrl, attr: {href: cardUrl}"></a>
+              </div>
+            </div>   
+            <div class="oj-flex">
+              <div class="oj-flex-item" style="margin-top:10px;" >
+                <!-- ko if: $data && $data.hasOwnProperty("options") -->
+                <!-- ko foreach: options -->
+                <div data-bind="template: { name: 'option-template'
+                    , data: {clazz:'vert-card-link',prompt:prompt,payload:payload,type:'postback'
+                             ,parent:$parentContext.$parents[3]} }"></div>
+                <!-- /ko -->
+                <!-- /ko -->
+              </div>
+            </div>   
+
+
+          </div>                
+
+          <!-- ko if: $data.hasOwnProperty("imageUrl") -->
+          <div class="oj-flex-item oj-sm-flex-initial " >
+            <img class="vert-card-image" data-bind="attr: {src: imageUrl}"/>
+          </div>
+          <!-- /ko -->
+
+        </div>
+      </li>
+      <!-- /ko -->
+    </div>
+  </script>
+
+
+<!-- Horizontal CARDs template -->
+<script type="text/html" id="cards-horizontal2">
+    <div id="filmStripDiv"
+         aria-label="Horizontal Cards"
+         class="demo-stretch-items"
+         data-bind="ojComponent: {
+                           component: 'ojFilmStrip',
+                           maxItemsPerPage: 1,
+                           arrowPlacement: 'overlay',
+                           arrowVisibility: $parentContext.$parents[2].currentNavArrowVisibility}">
+      <!-- ko foreach: cards -->
+      <div class="card-filmstrip-item">
+        <div class="oj-flex-items-pad">
+            <div class="oj-flex">
+              <div class="oj-flex-item " data-bind="if: $data && $data.hasOwnProperty('imageUrl')">
+              <img style="max-width:100%;height:auto;" data-bind="attr: {src: imageUrl}"/>
+              </div>
+            </div>   
+            <div class="oj-flex ">
+              <div class="oj-flex-item oj-sm-flex-initial" data-bind="if: $data && $data.hasOwnProperty('title')">
+                <div class="card-title" data-bind="html: title" class="name"></div>
+              </div>
+            </div>   
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-flex-initial" data-bind="if: $data && $data.hasOwnProperty('subTitle')">
+                <div class="card-sub-title" data-bind="html: subTitle" ></div>
+              </div>
+            </div>   
+            <div class="oj-flex">
+              <div class="oj-flex-item oj-sm-flex-initial" data-bind="if: $data && $data.hasOwnProperty('cardUrl')">
+                                    <a class="card-url" target="_blank" data-bind="text: cardUrl, attr: {href: cardUrl}"></a>
+              </div>
+            </div>   
+            <!-- ko if: $data && $data.hasOwnProperty("options") -->
+            <div class="options card-options">
+                <!-- ko foreach: options -->
+                <div class="oj-flex oj-sm-justify-content-center" data-bind="css:($index() === ($parent.options.length - 1)) ? 'option-last' : 'option'" >
+                  <div class="flex-item " >
+                   <div data-bind="template: { name: 'option-template', data: {clazz:'option-link',prompt:prompt,payload:payload,type:'postback',parent:$parentContext.$parents[3]} }"></div>
+                  </div>
+                </div>
+                <!-- /ko -->
+            </div>  
+            <!-- /ko -->
+          </div>
+      </div>
+      <!-- /ko -->
+    </div>
+  </script>
+
+<!-- Option Template -->
+<script type="text/html" id="option-template">
+
+    <!-- ko if: type != 'url' -->
+    <a id="globalLink" href="#last" 
+       data-bind="css:clazz,text:prompt, click: function() { parent.onClientSelection(prompt, payload,type); }"></a>
+    <!-- /ko -->
+    <!-- ko if: type === 'url' -->
+      <a data-bind="css:clazz,text: prompt, attr: {href: payload.url}"  target="_blank" ></a>
+    <!-- /ko -->
+    
+  </script>
+
+
+<script type="text/html" id="attachment">
+    <div>
+      <!-- ko if: attachmentType == 'image' -->
+      <img style="width:85%;height:auto;" data-bind="attr: {src: url}"/>
+      <!-- /ko -->
+      <!-- ko if: attachmentType == 'video' -->
+      <video id="myVideo" width="330" controls="controls">
+        <source data-bind="attr: {src: url}" type="video/mp4" >
+        Your browser does not support HTML5 video.
+      </video>
+      <!-- /ko -->
+      <!-- ko if: attachmentType == 'audio' -->
+      <audio controls="controls" width="330">
+        <source data-bind="attr: {src: url}" type="audio/mpeg">
+        Your browser does not support HTML5 audio.
+      </audio>
+      <!-- /ko -->
+      <!-- ko if: attachmentType == 'file' -->
+      <a data-bind="text: url, attr: {href: url}"  target="_blank" ></a>
+      <!-- /ko -->
+    </div>
+  </script>
+
+
+<!-- CHAT template -->
+<script type="text/html" id="chat_template">
+    <div class="oj-flex-items-pad message-content-container" style="position:relative;" data-bind="if: bot">
+      <div style="position:absolute; top:15px;">
+          <img src="img/Robot.png" style="width: 40px;height: 40px;">
+      </div>
+      <div data-bind="if: payload.items" style="margin-left:45px;">
+        <div data-bind="foreach: { data: payload.items, as: 'prompts' }">
+          <div data-bind="if: $data && $data.hasOwnProperty('type')">
+            <div data-bind="if: type == 'prompt'">
+              <div data-bind="template: { name: 'promt-template-bot', data: prompts }"></div>
+            </div>
+            <div data-bind="if: type == 'attachment'">
+              <div data-bind="template: { name: 'attachment', data: prompts }"></div>
+            </div>
+            <!-- check the type of the cards from the uihint! vertical/horizontal -->
+            <div data-bind="if: type == 'cards' && uihints.cardLayout == 'vertical'">
+              <div data-bind="template: { name: 'cards-vertical', data: prompts }"></div>
+      <div data-bind="if: prompts.options">
+        <div class="options">
+          <div data-bind="foreach: prompts.options">
+            <div class="oj-flex oj-sm-justify-content-center" data-bind="css:($index() === ($parent.options.length - 1)) ? 'option-last' : 'option'" >
+              <div class="flex-item " >
+                <div data-bind="template: { name: 'option-template'
+                    , data: {clazz:'option-link',prompt:prompt,payload:payload,type:'postback'
+                             ,parent:$parentContext.$parents[1]} }"></div>
+
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>
+
+            </div>
+            <div data-bind="if: type == 'cards' && uihints.cardLayout == 'horizontal'">
+              <div data-bind="template: { name: 'cards-horizontal2', data: prompts }"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-bind="if: payload.hasOwnProperty('globalOptions')">
+        <!-- global options button -->
+         <div class="oj-flex oj-sm-justify-content-center" style="margin-top:30px;" >
+        <!-- ko foreach: payload.globalOptions -->
+            <div class="flex-item " >
+                <div data-bind="template: { name: 'option-template'
+                    , data: {clazz:'global-option-link',prompt:prompt,payload:payload,type:'postback'
+                             ,parent:$parentContext.$parents[0]} }"></div>
+            </div>   
+        <!-- /ko -->
+        </div>
+
+      </div>
+      <div data-bind="if: payload.errorCode">
+        <div data-bind="template: { name: 'errorMessage-template', data: payload }"></div>
+      </div>
+    </div>
+
+    <div class="oj-flex-items-pad" style="margin: 5px" data-bind="if: !bot">
+      <div class="oj-flex">
+        <div class="oj-flex-item">
+          <div data-bind="template: { name: 'promt-template-client', data: item }"></div>
+        </div>
+      </div>
+    </div>
+  </script>
+
+<div id="notSupportedDialogWrapper">
+	<div style="display: none" id="notSupportedDialog"
+		data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide',title:'Not Supported'}">
+		<div class="oj-dialog-body">
+			<span data-bind="html:notSupportedMessage"></span>
+		</div>
+		<div class="oj-dialog-footer">
+			<button id="closeDialog"
+				data-bind="click: closeNotSupportedDialog ,ojComponent: {component: 'ojButton', label: 'OK'}">
+			</button>
+		</div>
+	</div>
+</div>

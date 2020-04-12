@@ -1,0 +1,26 @@
+<div class="pt-2 rounded-b-larger bg-grey-lighter bottester-bot" data-bind="with: message.data">
+    <!-- ko if: $data.attachment.type==='image' -->
+    <img style="height: 100%; width: 100%; object-fit: contain" data-bind="attr: {src: $data.attachment.url, onload: $parents[0].imageLoaded()}">
+    <!-- /ko -->
+    
+    <!-- ko if: $data.attachment.type==='video' -->
+    <video style="height: 100%; width: 100%; object-fit: contain" controls="controls">
+        <source data-bind="attr: {src: url}" type="video/mp4" />
+        Your browser does not support HTML5 video.
+    </video>
+    <!-- /ko -->
+
+    <!-- ko if: $data.attachment.type==='audio' -->
+        <audio style="height: 100%; width: 100%; object-fit: contain" controls="controls">
+            <source data-bind="attr: {src: url}" type="audio/mpeg" />
+            Your browser does not support HTML5 audio.
+        </audio>    
+    <!-- /ko -->
+
+    <!-- ko if: $data.attachment.type==='file' -->
+        <a data-bind="text: url, attr: {href: url}"  target="_blank" ></a>
+    <!-- /ko -->
+
+    <!-- ko if: $data.actions && $data.actions.length>0 -->
+    <!-- /ko -->
+</div>

@@ -1,0 +1,155 @@
+<div class="w-full min-h-screen bg-canvas">
+  <!-- content -->
+  <div id="content" class="container pb-32">
+    <div class="p-3">
+      <!-- ko foreach: { data: messages, as: 'message' } -->
+      <div class="flex flex-row">
+        <!-- ko if: message.showAvatar -->
+        <div class="w-8">
+          <div class="flex items-center justify-center w-8 h-8">
+            <img src="../bot.jpeg">
+          </div>
+          <p class="text-xs text-black" data-bind="text: message.timestamp"></p>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: message.showAvatar -->
+        <div class="w-8">
+          <div class="flex items-center justify-center w-8 h-8"></div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'text' -->
+        <div class="w-full pl-2 pr-2">
+          <div class="mb-2 p-2 rounded-larger text-sm bg-answer" data-bind="css:{'bubble-left': message.showAvatar, 'bubble-left-no-bubble': !message.showAvatar}, html: message.body"></div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'question' -->
+        <div class="w-full pl-2 pr-2 mt-6">
+          <div class="flex flex-row-reverse">
+            <div class="mb-6 p-2 rounded-larger text-sm bg-question float-right bubble-right" data-bind="html: message.body"></div>
+          </div>
+        </div>
+        <div class="w-8 mt-6">
+          <div class="flex items-center justify-center w-8 h-8">
+            <img src="../user.jpeg">
+          </div>
+          <p class="text-xs text-black" data-bind="text: message.timestamp"></p>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'trending' -->
+        <trending-card class="w-full pl-2 pr-2" params="{ message: message, bot: $parent }"></trending-card>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'section-list' -->
+        <section-list class="w-full pl-2 pr-2" params="{ message: message, bot: $parent }"></section-list>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'topic-list' -->
+        <topic-list class="w-full pl-2 pr-2" params="{ message: message, bot: $parent }"></topic-list>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'item-list' -->
+        <item-list class="w-full pl-2 pr-2" params="{ message: message, bot: $parent }"></item-list>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'answer' -->
+        <answer class="w-full pl-2 pr-2 mb-2" params="{ message: message, bot: $parent }"></answer>
+        <!-- /ko -->
+
+        <!-- ko if: message.type === 'attachment' -->
+        <attachment class="w-full pl-2 pr-2 mb-2" params="{ message: message, bot: $parent }"></attachment>
+        <!-- /ko -->
+
+         <!-- ko ifnot: message.type === 'question' -->
+        <div class="w-8">
+          <div class="flex items-center justify-center w-8 h-8"></div>
+        </div>
+        <!-- /ko -->
+      </div>
+      <!-- /ko -->
+
+      <!-- loading -->
+      <div class="flex flex-row" data-bind="if: loading">
+        <div class="w-10">
+          <div class="flex items-center justify-center w-10 h-10">
+            <img src="../bot.jpeg">
+          </div>
+        </div>
+        <div class="pl-3">
+          <div class="mb-6 p-3 rounded-larger text-sm text-white bg-question">
+            <svg class="fill-current ml-4 mr-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="12px" viewBox="0 0 24 12"
+              style="enable-background:new 0 0 50 50;" xml:space="preserve">
+              <rect x="0" y="0" width="4" height="12">
+                <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0s" dur="0.6s"
+                  repeatCount="indefinite" />
+              </rect>
+              <rect x="7" y="0" width="4" height="12">
+                <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0.2s" dur="0.6s"
+                  repeatCount="indefinite" />
+              </rect>
+              <rect x="14" y="0" width="4" height="12">
+                <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0.4s" dur="0.6s"
+                  repeatCount="indefinite" />
+              </rect>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- transfer -->
+  <!-- ko if: showTransferButton -->
+  <a class="fixed flex flex-row pl-4 pr-4 pt-2 pb-2 rounded-full cursor-pointer no-underline gradient-red transfer-button"
+    href="http://www.guodadrugstores.com/contact.htm" target="_blank">
+    <svg t="1539672285961" class="fill-current w-4 h-4 mr-2" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+      p-id="1038" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+      <defs>
+        <style type="text/css"></style>
+      </defs>
+      <path d="M17.733928 839.981707C7.369944 837.793755 0 828.734865 0 818.370881 0 459.469955 426.074896 383.083555 524.916595 370.186153L524.916595 205.552348c0-8.099262 4.49106-15.584361 11.745848-19.346103 7.216404-3.838513 15.853057-3.301121 22.570454 1.036398l455.170821 306.466844c5.98808 4.030438 9.596281 10.78622 9.596281 18.309705 0 7.254789-3.608202 14.010571-9.596281 18.156164l-455.017281 306.428459c-6.755782 4.414289-15.430821 4.874911-22.647224 1.113169-7.216404-3.838513-11.630693-11.400382-11.630693-19.422874l0-177.224126c-71.66503 0.537392-130.854894 3.761742-180.256551 9.673052-236.682685 27.982757-299.902988 170.122877-302.589946 176.187727l0 0c-3.569817 8.176032-11.592308 13.434794-20.190576 13.434794C20.651198 840.327173 19.077408 840.250403 17.733928 839.981707z"
+        p-id="1039" fill="#ffffff"></path>
+    </svg>
+    <div class="text-sm text-white" data-bind="text: display.menu.left_menu_6"></div>
+  </a>
+  <!-- /ko -->
+  
+<!--
+   query 
+  <div class="fixed flex flex-row pl-4 pr-4 pt-2 pb-2 rounded-full cursor-pointer no-underline gradient-red query-button" data-bind="click: showQueryCard">
+    <svg t="1544623862928" class="fill-current w-4 h-4 mr-2" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+      p-id="2241" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200">
+      <defs>
+        <style type="text/css"></style>
+      </defs>
+      <path d="M959.744 870.592l-199.808-199.808a382.08 382.08 0 0 0 71.552-222.72c0-212.032-171.968-384-384-384S64 235.968 64 448s171.456 384 383.488 384a381.952 381.952 0 0 0 222.72-71.552l199.808 199.808 89.728-89.664zM447.488 704a256 256 0 1 1 0-512 256 256 0 0 1 0 512z"
+        p-id="2242" fill="#ffffff"></path>
+    </svg>
+    <div class="text-md text-white">查询检验报告</div>
+  </div>-->
+
+  <!-- input bg-grbg-grey-lightest -->
+  <div class="fixed w-full pin-b h-16 pl-3 pr-3 pt-2 pb-2 bg-canvas" style="z-index: 99999">
+    <div class="flex flex-row h-full border border-solid border-question bg-white shadow">
+      <input type="text" class="flex w-full pl-3 pr-3 font-sans" style="z-index: 99999" placeholder="" data-bind="placeholder: placeholderText, textInput: question, enable: botInitialized, event: { keypress: onEnterKey, blur: onInputBlur }">
+      <div class="flex items-center justify-center w-16" data-bind="click: onSubmit">
+        <div class="flex items-center justify-center rounded-full w-8 h-8 shadow cursor-pointer bg-question">
+          <svg t="1539662564680" class="fill-current w-4 h-4" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="1305" xmlns:xlink="http://www.w3.org/1999/xlink" width="200.1953125" height="200">
+            <defs>
+              <style type="text/css"></style>
+            </defs>
+            <path d="M971.387916 23.759347 28.09806 518.407462c-38.802954 20.336728-37.211038 50.145356 3.502215 66.263506l120.428449 47.59829c40.633657 16.078352 102.240808 7.362612 136.785387-19.660163L811.83813 200.183443c34.385387-27.102371 38.086592-23.082783 8.198368 8.91473l-413.500194 442.672056c-29.96782 31.878119-21.05309 70.959658 19.699961 86.839021l14.088457 5.531908c40.753051 15.759969 107.374738 42.265371 147.928799 58.821298l133.561757 54.363933c40.593859 16.516129 73.785309 30.206607 73.785309 30.445394 0 0.238787 0.238787 0.994948 0.437777 1.034745 0.19899 0.079596 9.790284-34.385387 21.252079-76.650758L1020.976101 63.676642C1032.437897 21.371473 1010.19087 3.462417 971.387916 23.759347z"
+              p-id="1306" fill="#ffffff"></path>
+            <path d="M410.874275 788.794403l-92.410727-37.808006c-40.514264-16.595725-59.935639 2.865449-43.140925 43.339914 0.039798 0 85.804275 206.710299 83.416401 213.993315-2.46747 7.243218 82.30206-122.657132 82.30206-122.657132C464.99942 848.96883 451.388538 805.390128 410.874275 788.794403z"
+              p-id="1307" fill="#ffffff"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
